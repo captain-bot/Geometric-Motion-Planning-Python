@@ -2,6 +2,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+"""
+This file contains three main classes namely "Quaternion", "Dual-Quaternion" and
+"IntpRigidDispDualQuat".
+
+The class "IntpRigidDispDualQuat" can be used to obtain smooth interpolation 
+betweeen two rigid displacements. The constructor of this class takes 4 input
+arguents all in numpy.array format. The first two are position and rotation 
+quaternion of initial pose whereas the last two are position and quayernion 
+vectors of final pose.
+
+Author: Anirban Sinha
+Last updated: August 21st., 2019
+"""
+
 
 # Quaternion class
 class Quaternion(object):
