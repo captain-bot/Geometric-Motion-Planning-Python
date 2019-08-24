@@ -45,8 +45,11 @@ class Quaternion(object):
     # Get Axis-Angle representation of rotation matrix
     def get_axis_angle(self):
         new_q = self.total/np.dot(self.total, self.total)
+        # print(new_q)
         if new_q[0] == 1:
-            raise Exception("scalar part can not be zero\n")
+            # raise Exception("scalar part can not be zero\n")
+            ang = 0
+            ax = np.array([1, 0, 0])
         else:
             ang = 2 * np.arccos(new_q[0])
             ax = new_q[1:]/np.sqrt(1 - new_q[0]**2)
@@ -311,7 +314,7 @@ rot_matrix3 = np.array([[1, 0, 0], [0, np.cos(ang3), -np.sin(ang3)], [0, np.sin(
 rot_matrix = np.dot(np.dot(rot_matrix1, rot_matrix2), rot_matrix3)
 
 quat_vec1 = rotm2quat(rot_matrix1)
-quat_vec2 = rotm2quat(rot_matrix2)
+quat_vec2 = rotm2quat(rot_matrix1)
 
 print("Initial Position: ")
 print(p_vec1)
