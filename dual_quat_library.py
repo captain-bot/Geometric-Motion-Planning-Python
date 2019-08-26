@@ -283,10 +283,13 @@ class IntpRigidDispDualQuat(object):
     # Compute m of screw parameter
     @staticmethod
     def compute_screw_m(u, th, d, t):
-        temp1 = np.cross(t, u)
-        temp2 = (t - d * u) / np.tan(th / 2)
-        temp = temp1 + temp2
-        return 0.5 * temp
+        if th != 0:
+            temp1 = np.cross(t, u)
+            temp2 = (t - d * u) / np.tan(th / 2)
+            temp = temp1 + temp2
+            return 0.5 * temp
+        else:
+            return np.array([0, 0, 0])
 
 
 # Rotation matrix to quaternion
@@ -323,6 +326,7 @@ print(quat_vec1)
 
 print("Final Position: ")
 print(p_vec2)
+
 print("Final Rotation Quaternion: ")
 print(quat_vec2)
 print("\n")
