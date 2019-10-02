@@ -157,7 +157,7 @@ class IntpRigidDispDualQuat(object):
         for idx, tau in enumerate(tau_list):
             temp = self.pow_dual_quat(sp, tau)
             dual_tau = self.initial_config * self.pow_dual_quat(sp, tau)
-            if idx % 3 == 0 or idx == 0:
+            if idx % 2 == 0 or idx == 0:
                 print("Iteration %d" % idx)
                 print("Intermediate Config (Dual-Quaternion):")
                 print(dual_tau)
@@ -174,17 +174,17 @@ class IntpRigidDispDualQuat(object):
 
                 # Plot
                 ax.quiver(position[0], position[1], position[2], rotation_matrix[0, 0], rotation_matrix[1, 0],
-                          rotation_matrix[2, 0], length=0.01, normalize=False, color='r')
+                          rotation_matrix[2, 0], length=0.01, normalize=True, color='r')
                 ax.quiver(position[0], position[1], position[2], rotation_matrix[0, 1], rotation_matrix[1, 1],
-                          rotation_matrix[2, 1], length=0.01, normalize=False, color='g')
+                          rotation_matrix[2, 1], length=0.01, normalize=True, color='g')
                 ax.quiver(position[0], position[1], position[2], rotation_matrix[0, 2], rotation_matrix[1, 2],
-                          rotation_matrix[2, 2], length=0.01, normalize=False, color='b')
+                          rotation_matrix[2, 2], length=0.01, normalize=True, color='b')
         ax.set_xlabel("x [m]")
         ax.set_ylabel("y [m]")
         ax.set_zlabel("z [m]")
         ax.set_title("Screw-Interpolation")
         # ax.set_aspect('equal')
-        ax.view_init(10, 130)
+        # ax.view_init(10, 130)
         plt.show()
 
     # Convert Position Vector and Orientation Quaternion into Dual-Quaternion
@@ -304,18 +304,30 @@ def rotm2quat(rotm):
 
 
 # Test cases
-p_vec1 = np.array([0.1, 0.5, 0.23])
-# p_vec2 = np.array([0.2, 0.6, 0.33])
-p_vec2 = np.array([0.3, 0.7, 0.4])
-ang1, ang2, ang3 = -np.pi/6, np.pi/3, -np.pi/4
+# p_vec1 = np.array([0.1, 0.5, 0.23])
+# # p_vec2 = np.array([0.2, 0.6, 0.33])
+# p_vec2 = np.array([0.3, 0.7, 0.4])
+# ang1, ang2, ang3 = -np.pi/6, np.pi/3, -np.pi/4
+#
+# rot_matrix1 = np.array([[np.cos(ang1), -np.sin(ang1), 0], [np.sin(ang1), np.cos(ang1), 0], [0, 0, 1]])
+# rot_matrix2 = np.array([[np.cos(ang2), 0, np.sin(ang2)], [0, 1, 0], [-np.sin(ang2), 0, np.cos(ang2)]])
+# rot_matrix3 = np.array([[1, 0, 0], [0, np.cos(ang3), -np.sin(ang3)], [0, np.sin(ang3), np.cos(ang3)]])
+# rot_matrix = np.dot(np.dot(rot_matrix1, rot_matrix2), rot_matrix3)
+#
+# quat_vec1 = rotm2quat(rot_matrix1)
+# quat_vec2 = rotm2quat(rot_matrix1)
 
-rot_matrix1 = np.array([[np.cos(ang1), -np.sin(ang1), 0], [np.sin(ang1), np.cos(ang1), 0], [0, 0, 1]])
-rot_matrix2 = np.array([[np.cos(ang2), 0, np.sin(ang2)], [0, 1, 0], [-np.sin(ang2), 0, np.cos(ang2)]])
-rot_matrix3 = np.array([[1, 0, 0], [0, np.cos(ang3), -np.sin(ang3)], [0, np.sin(ang3), np.cos(ang3)]])
-rot_matrix = np.dot(np.dot(rot_matrix1, rot_matrix2), rot_matrix3)
+# p_vec1 = np.array([1.0217, 0.9452, 0.3908])
+# p_vec2 = np.array([0.932, -0.1, 0.386])
+# quat_vec1 = np.array([0.731, 0.018, 0.681, -0.048])
+# quat_vec2 = np.array([0.731, 0.018, 0.681, -0.048])
+# # quat_vec1 = np.array([[0.4993, -0.5007, 0.5007, -0.4993])
 
-quat_vec1 = rotm2quat(rot_matrix1)
-quat_vec2 = rotm2quat(rot_matrix1)
+# Test case 3
+p_vec1 = np.array([1.069, 0.415, 0.158])
+p_vec2 = np.array([1.021, -0.098, 0.138])
+quat_vec1 = np.array([0.711, -0.005, 0.703, 0.006])
+quat_vec2 = np.array([0.711, -0.005, 0.703, 0.006])
 
 print("Initial Position: ")
 print(p_vec1)
@@ -329,6 +341,7 @@ print("Final Rotation Quaternion: ")
 print(quat_vec2)
 print("\n")
 
+# Instantiate an object of "IntpRigidDispDualQuat" class
 interpolate_obj = IntpRigidDispDualQuat(p_vec1, quat_vec1, p_vec2, quat_vec2)
-interpolate_obj.interpolate()
+interpolate_obj.interpolate()                   # call interpolate method
 
